@@ -1,17 +1,30 @@
 import Koa from "koa";
 import Router from "koa-router";
-
+import { RestaurantModel } from "../models/restaurant.model";
+import { TableModel } from "../models/table.model";
 
 const router: Router = new Router();
 
 router.post("/", async (ctx: Koa.Context) => {
-    console.log("create table to this restaurant");
-    ctx.body = "POST";
+    const restaurantId = ctx.params.restId;
+
+    const newTable = new TableModel();
+    newTable.restaurantId = restaurantId;
+    await newTable.save();
+
+    await RestaurantModel.findByIdAndUpdate(restaurantId, {
+        $push: { tables: newTable.id },
+    });
+
+    ctx.body = { table: newTable };
 });
 
 router.get("/", async (ctx: Koa.Context) => {
-    console.log("get tables of restaurant");
-    ctx.body = "GET ALL";
+    const restaurantId = ctx.params.restId;
+
+    const tables = await TableModel.find({ restaurantId: restaurantId });
+
+    ctx.body = { tables: [tables] };
 });
 
 export default () => router.routes();
