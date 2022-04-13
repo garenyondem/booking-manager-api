@@ -1,6 +1,7 @@
 import Koa from "koa";
 import HttpStatus from "http-status-codes";
 import bodyParser from "koa-bodyparser";
+import logger from "koa-logger";
 
 class App {
     public app: Koa;
@@ -10,8 +11,10 @@ class App {
         this.mountMiddlewares();
     }
     private mountMiddlewares(): void {
-        this.app.use(errorHandler());
+        // this.app.use(errorHandler());
         this.app.use(bodyParser());
+
+        this.app.use(logger());
 
         this.app.on("error", console.error);
     }

@@ -9,11 +9,11 @@ const routerOpts: Router.IRouterOptions = {
 
 const router: Router = new Router(routerOpts);
 
-router.use("/restaurants/:restId", restaurantRoutes);
-router.use("/restaurants/:restId/tables", tableRoutes);
+router.use("/restaurants", restaurantRoutes());
+router.use("/restaurants/:restId/tables", tableRoutes());
 router.use(
     "/restaurants/:restId/tables/:tableId/reservations",
-    reservationRoutes
+    reservationRoutes()
 );
 
 export default () => router.routes();

@@ -1,11 +1,7 @@
 import Koa from "koa";
 import Router from "koa-router";
 
-const routerOpts: Router.IRouterOptions = {
-    prefix: "/restaurant",
-};
-
-const router: Router = new Router(routerOpts);
+const router: Router = new Router();
 
 router.post("/", async (ctx: Koa.Context) => {
     console.log("create reservation for this table this restaurant");
