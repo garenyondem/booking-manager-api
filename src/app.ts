@@ -1,4 +1,3 @@
-import "reflect-metadata";
 import Koa from "koa";
 import HttpStatus from "http-status-codes";
 
