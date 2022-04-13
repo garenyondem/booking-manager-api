@@ -1,5 +1,6 @@
 import Koa from "koa";
 import HttpStatus from "http-status-codes";
+import bodyParser from "koa-bodyparser";
 
 class App {
     public app: Koa;
@@ -10,6 +11,7 @@ class App {
     }
     private mountMiddlewares(): void {
         this.app.use(errorHandler());
+        this.app.use(bodyParser());
 
         this.app.on("error", console.error);
     }
@@ -28,7 +30,7 @@ function errorHandler() {
             ctx.body = { error };
             ctx.app.emit("error", error, ctx);
         }
-    }
+    };
 }
 
 export default new App().app;
