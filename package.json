@@ -4,8 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "tsc",
-    "serve": "ts-node ./src/server.ts"
+    "start:ts": "ts-node ./src/index.ts",
+    "start:js": "node ./dist/index.js",
+    "watch": "nodemon --signal SIGTERM --exec ts-node ./src/index.ts",
+    "build": "tsc --pretty"
   },
   "repository": {
     "type": "git",

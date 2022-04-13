@@ -12,5 +12,5 @@ const PORT = process.env.PORT ? +process.env.PORT : 5454;
 export default {
     nodeEnv: process.env.NODE_ENV,
     servicePort: PORT,
-    coreDBUri: process.env.CORE_MONGO_URI || "",
+    dbUri: process.env.MONGO_URI || "",
 };
