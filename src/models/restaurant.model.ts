@@ -13,7 +13,7 @@ export interface IRestaurantModel extends Model<IRestaurant> {}
 const RestaurantSchema = new Schema(
     {
         timeframes: {
-            type: [Schema.Types.ObjectId],
+            type: [TimeframeSchema.default],
             required: true,
         },
         tables: [Schema.Types.ObjectId],
