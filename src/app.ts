@@ -1,5 +1,4 @@
 import Koa from "koa";
-import HttpStatus from "http-status-codes";
 import bodyParser from "koa-bodyparser";
 import logger from "koa-logger";
 
@@ -25,10 +24,7 @@ function errorHandler() {
         try {
             await next();
         } catch (error) {
-            ctx.status =
-                error.statusCode ||
-                error.status ||
-                HttpStatus.INTERNAL_SERVER_ERROR;
+            ctx.status = error.statusCode || error.status || 500;
             error.status = ctx.status;
             ctx.body = { error };
             ctx.app.emit("error", error, ctx);
