@@ -21,13 +21,11 @@
   "homepage": "https://github.com/garenyondem/booking-manager-api#readme",
   "dependencies": {
     "dotenv": "^16.0.0",
-    "http-status-codes": "^2.2.0",
     "koa": "^2.13.4",
     "koa-bodyparser": "^4.3.0",
     "koa-logger": "^3.2.1",
     "koa-router": "^10.1.1",
-    "mongoose": "^6.2.11",
-    "winston": "^3.7.2"
+    "mongoose": "^6.2.11"
   },
   "engines": {
     "node": ">=16.14"
