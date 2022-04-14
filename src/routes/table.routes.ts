@@ -6,23 +6,23 @@ import { TableModel } from "../models/table.model";
 const router: Router = new Router();
 
 router.post("/", async (ctx: Koa.Context) => {
-    const restaurantId = ctx.params.restId;
+    const { restId } = ctx.params;
 
     const newTable = new TableModel();
-    newTable.restaurantId = restaurantId;
+    newTable.restaurantId = restId;
     await newTable.save();
 
-    await RestaurantModel.findByIdAndUpdate(restaurantId, {
-        $push: { tables: newTable.id },
+    await RestaurantModel.findByIdAndUpdate(restId, {
+        $addToSet: { tables: newTable.id },
     });
 
     ctx.body = { table: newTable };
 });
 
 router.get("/", async (ctx: Koa.Context) => {
-    const restaurantId = ctx.params.restId;
+    const { restId } = ctx.params;
 
-    const tables = await TableModel.find({ restaurantId: restaurantId });
+    const tables = await TableModel.find({ restaurantId: restId });
 
     ctx.body = { tables: [tables] };
 });
