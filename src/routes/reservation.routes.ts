@@ -1,26 +1,60 @@
 import Koa from "koa";
 import Router from "koa-router";
+import { ReservationModel } from "../models/reservation.model";
+import { TableModel } from "../models/table.model";
 
 const router: Router = new Router();
 
 router.post("/", async (ctx: Koa.Context) => {
-    console.log("create reservation for this table this restaurant");
-    ctx.body = "POST";
+    const { restId, tableId } = ctx.params;
+    const { timeframe, size } = ctx.request.body;
+
+    const newReservation = new ReservationModel();
+    newReservation.timeframe = timeframe;
+    newReservation.tableId = tableId;
+    newReservation.size = size;
+    await newReservation.save();
+
+    await TableModel.findByIdAndUpdate(tableId, {
+        $addToSet: { reservations: newReservation.id },
+    });
+
+    ctx.body = { reservation: newReservation };
 });
 
 router.get("/", async (ctx: Koa.Context) => {
-    console.log("get reservations for this table this restaurant");
-    ctx.body = "GET ALL";
+    const { restId, tableId } = ctx.params;
+    const reservations = await ReservationModel.find({ tableId: tableId });
+    ctx.body = { reservations };
 });
 
 router.put("/:reservationId", async (ctx: Koa.Context) => {
-    console.log("edit the reservation of this table this restaurant");
-    ctx.body = "GET ALL";
+    const { restId, tableId, reservationId } = ctx.params;
+    const { timeframe, size } = ctx.request.body;
+
+    const updatedReservation = await ReservationModel.findByIdAndUpdate(
+        reservationId,
+        {
+            $set: {
+                size,
+                timeframe,
+            },
+        },
+        { new: true }
+    );
+
+    ctx.body = { reservation: updatedReservation };
 });
 
 router.delete("/:reservationId", async (ctx: Koa.Context) => {
-    console.log("delete this reservation on this table in this restaurant");
-    ctx.body = "DELETE";
+    const { restId, tableId, reservationId } = ctx.params;
+
+    await ReservationModel.findByIdAndDelete(reservationId);
+    await TableModel.findByIdAndUpdate(tableId, {
+        $pull: { reservations: reservationId },
+    });
+
+    ctx.body = { removed: true };
 });
 
 export default () => router.routes();
