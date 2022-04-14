@@ -5,10 +5,10 @@ import { RestaurantModel } from "../models/restaurant.model";
 const router: Router = new Router();
 
 router.post("/", async (ctx: Koa.Context) => {
-    const reqBody = ctx.request.body;
+    const { timeframes } = ctx.request.body;
 
     const newRestaurant = new RestaurantModel();
-    newRestaurant.timeframes = reqBody.timeframes;
+    newRestaurant.timeframes = timeframes;
     await newRestaurant.save();
 
     ctx.body = { restaurant: newRestaurant };
